@@ -1,0 +1,35 @@
+name: Build SOUNDNA - Safe Hearing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mac:
+    runs-on: macos-15-intel
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compila e verifica AU e VST3 universali
+        run: bash scripts/build-mac.command
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SOUNDNA-Safe-Hearing-macOS-universal
+          path: dist/SOUNDNA-Safe-Hearing-macOS-universal.zip
+          if-no-files-found: error
+
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compila VST3 Windows
+        shell: pwsh
+        run: ./scripts/build-windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SOUNDNA-Safe-Hearing-Windows-x64
+          path: dist/SOUNDNA_Listen_Windows_x64.zip
+          if-no-files-found: error
